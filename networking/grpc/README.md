@@ -38,6 +38,8 @@ RPC (gRPC Remote Procedure Call) is an open-source remote procedure call (RPC) s
 
 4. __Bidirectional Streaming RPCs__: Both sides send a sequence of messages using a read-write stream. The two streams operate independently, so clients and servers can read and write in whatever order they like: for example, the server could wait to receive all the client messages before writing its responses, or it could alternately read a message then write a message, or some other combination of reads and writes.
 
+![Method types](_images/method-types.png)
+
 ## Security
 
 * __Authentication__: gRPC supports strong authentication and encrypted data transfer, ensuring secure communication between client and server. It integrates with various authentication mechanisms, including SSL/TLS for transport security and token-based authentication for application-level security.
