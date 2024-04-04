@@ -31,7 +31,6 @@ var configuration = builder.Configuration
     .Build();
 
 var clientsOptions = configuration.GetSection(ClientsOptions.SectionName).Get<ClientsOptions>();
-Console.WriteLine($"BankingService address: {clientsOptions!.BankingService}");
 
 builder.Services.AddGrpcClient<BankingService.Client.Withdrawals.WithdrawalsClient>(o =>
 {

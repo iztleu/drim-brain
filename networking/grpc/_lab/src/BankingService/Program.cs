@@ -19,7 +19,6 @@ var configuration = builder.Configuration
     .Build();
 
 var clientsOptions = configuration.GetSection(ClientsOptions.SectionName).Get<ClientsOptions>();
-Console.WriteLine($"BlockchainService address: {clientsOptions!.BlockchainService}");
 
 builder.Services.AddGrpcClient<BlockchainService.Client.Withdrawals.WithdrawalsClient>(o =>
 {
@@ -34,12 +33,6 @@ var app = builder.Build();
 
 app.MapWithdrawals();
 
-var command = args.FirstOrDefault();
-if (command == "migrate")
-{
-    await app.MigrateDatabase();
-}
-else
-{
-    app.Run();
-}
+await app.MigrateDatabase();
+
+app.Run();
