@@ -1,5 +1,7 @@
 # gRPC
 
+![gRPC](_images/grpc.png)
+
 RPC (gRPC Remote Procedure Call) is an open-source remote procedure call (RPC) system initially developed by Google. It leverages HTTP/2 for transport, Protocol Buffers as the interface description language, and it offers features such as authentication, load balancing, retries, and more. gRPC enables efficient, language-agnostic, and platform-agnostic communication between services, making it a popular choice for building microservices and distributed systems. Let's break down its main components and features:
 
 ## Protocol Buffers (Protobuf)
