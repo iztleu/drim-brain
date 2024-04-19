@@ -9,6 +9,7 @@ public static class ChannelAsyncEnumerable
     public static async Task Run()
     {
         var channel = Channel.CreateUnbounded<CryptoDepositCreatedEvent>();
+        var channelWriter = channel.Writer;
 
         _ = Task.Run(async () =>
         {
@@ -18,7 +19,7 @@ public static class ChannelAsyncEnumerable
             while (!string.IsNullOrWhiteSpace(line = await reader.ReadLineAsync()))
             {
                 var @event = JsonSerializer.Deserialize<CryptoDepositCreatedEvent>(line);
-                await channel.Writer.WriteAsync(@event!);
+                await channelWriter.WriteAsync(@event!);
                 Thread.Sleep(500);
             }
 

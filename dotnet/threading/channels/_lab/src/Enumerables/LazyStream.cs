@@ -3,7 +3,7 @@ using Events;
 
 namespace Enumerables;
 
-public static class LazyCollection
+public static class LazyStream
 {
     public static IEnumerable<CryptoDepositCreatedEvent> GetEvents()
     {
