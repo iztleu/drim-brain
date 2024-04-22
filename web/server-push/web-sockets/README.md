@@ -14,6 +14,8 @@ WebSockets provide a powerful way to enhance the interactivity and performance o
 
   * __Frames__: Data is transmitted in frames, which can be of varying lengths and can represent either control messages (such as close, ping, or pong frames) or data messages (text, binary).
 
+![Frame](_images/frame.webp)
+
   * __Efficiency__: Unlike HTTP, WebSocket does not require HTTP headers for each message, reducing the overhead and latency and making it more suitable for high-frequency and real-time data exchange.
 
 3. __Keeping the Connection Alive__:
@@ -30,7 +32,31 @@ WebSockets provide a powerful way to enhance the interactivity and performance o
 
 * __Fallback Mechanisms__: In environments where WebSockets are not supported, applications can fall back to older technologies such as long polling or server-sent events, although these may not offer the same performance benefits.
 
-![WebSockets](_images/websockets.png)
+![WebSockets](_images/websockets.webp)
+
+## Modes
+
+WebSockets support two types of data frames: __text frames__ and __binary frames__. These two modes determine how the data is being transmitted over a WebSocket connection.
+
+### Text
+
+In text mode, data is transmitted using UTF-8 encoding. This mode is primarily intended for sending text data. It is the most straightforward way of exchanging data over WebSockets because it uses readable text strings, which are easy to use directly in most web applications. For instance, sending JSON-formatted strings is common and can be directly used by JavaScript in the browser without additional handling.
+
+#### Characteristics
+
+* __Encoding__: Data must be valid UTF-8 strings.
+* __Use Cases__: Most suitable for messaging, command control for APIs, and other scenarios where human-readable format is advantageous.
+* __Efficiency__: Less efficient than binary mode for transmitting large amounts of data or binary data (like images), due to potential encoding and size overhead.
+
+### Binary
+
+Binary mode allows raw binary data to be sent and received. This is crucial for applications that require the transfer of non-textual data, such as audio, video, or any form of file transfer. Binary data is transmitted exactly as is, without any transformation or encoding, which makes this mode more efficient for certain types of data.
+
+#### Characteristics
+
+* __Data Type__: Any form of binary data can be transmitted (e.g., binary files, buffers).
+* __Use Cases__: Ideal for applications like live video streaming, audio feeds, or real-time games where performance and exact reproduction of data are crucial.
+* __Efficiency__: More efficient than text mode for binary data because it avoids conversion overhead and can handle data streams in their native formats.
 
 ## Use Cases
 
