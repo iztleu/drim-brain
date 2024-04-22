@@ -8,6 +8,7 @@ package withdrawals;
 
 service Withdrawals {
     rpc CreateWithdrawal(CreateWithdrawalRequest) returns (CreateWithdrawalReply);
+    rpc SubscribeForWithdrawals(SubscribeForWithdrawalsRequest) returns (stream WithdrawalDto);
 }
 
 message CreateWithdrawalRequest {
@@ -16,6 +17,10 @@ message CreateWithdrawalRequest {
     string currency = 3;
     double amount = 4;
     string crypto_address = 5;
+}
+
+message SubscribeForWithdrawalsRequest {
+    int32 user_id = 1;
 }
 
 message CreateWithdrawalReply {
