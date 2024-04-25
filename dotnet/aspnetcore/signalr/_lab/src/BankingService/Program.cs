@@ -1,0 +1,45 @@
+using System.Reflection;
+using BankingService.Clients;
+using BankingService.Database;
+using BankingService.Features.Deposits.Registration;
+using BankingService.Features.Withdrawals.Registration;
+using Common.Validation;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<BankingDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("BankingDbContext")));
+
+builder.Services.AddMediatR(cfg => cfg
+    .RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
+    .AddOpenBehavior(typeof(ValidationBehavior<,>)));
+
+var configuration = builder.Configuration
+    .AddJsonFile(Path.Combine("extraSettings", "appsettings.json"), optional: false, reloadOnChange: true)
+    .Build();
+
+var clientsOptions = configuration.GetSection(ClientsOptions.SectionName).Get<ClientsOptions>();
+
+builder.Services.AddGrpcClient<BlockchainService.Client.Deposits.DepositsClient>(o =>
+{
+    o.Address = new Uri(clientsOptions!.BlockchainService);
+});
+builder.Services.AddGrpcClient<BlockchainService.Client.Withdrawals.WithdrawalsClient>(o =>
+{
+    o.Address = new Uri(clientsOptions!.BlockchainService);
+});
+
+builder.Services.AddGrpc();
+
+builder.AddDeposits();
+builder.AddWithdrawals();
+
+var app = builder.Build();
+
+app.MapDeposits();
+app.MapWithdrawals();
+
+await app.MigrateDatabase();
+
+app.Run();
