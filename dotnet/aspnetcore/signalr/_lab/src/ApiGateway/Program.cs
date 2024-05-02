@@ -27,8 +27,8 @@ builder.Services.AddMediatR(cfg => cfg
     .RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
     .AddOpenBehavior(typeof(ValidationBehavior<,>)));
 
-builder.Services.AddSignalR();
-    //.AddMessagePackProtocol();
+builder.Services.AddSignalR()
+    .AddMessagePackProtocol();
 
 builder.Services.AddSingleton<ApiGatewayMetrics>();
 
@@ -53,7 +53,6 @@ app.UseStaticFiles();
 
 app.MapHub<ChatHub>("/chatHub", options =>
 {
-    //options.Transports = HttpTransportType.ServerSentEvents;
 });
 app.MapHub<DepositsHub>("/depositsHub");
 

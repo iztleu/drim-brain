@@ -34,7 +34,7 @@
     <script src="/msgpack.js"></script>
     <script>
         var connection = new signalR.HubConnectionBuilder()
-            //.withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol())
+            .withHubProtocol(new signalR.protocols.msgpack.MessagePackHubProtocol())
             .withUrl("/chatHub")
             .build();
 

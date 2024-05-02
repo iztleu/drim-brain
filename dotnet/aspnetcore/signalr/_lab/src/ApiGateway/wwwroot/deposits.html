@@ -9,7 +9,9 @@
     <ul id="deposits"></ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script>
-        var connection = new signalR.HubConnectionBuilder().withUrl("/depositsHub").build();
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/depositsHub")
+            .build();
         connection.start().then(function () {
             console.info("Connection established")
 
