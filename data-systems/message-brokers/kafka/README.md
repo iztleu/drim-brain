@@ -349,12 +349,19 @@ Having quotas protects against these issues and is all the more important in lar
 Apache Kafka is beneficial in a variety of domains due to its capabilities in handling large volumes of data streams in real-time. Here are some example domains where Kafka is widely used:
 
 * __E-commerce__: Kafka is used for managing real-time data feeds related to user activity, inventory, order processing, and inter-service communication. This helps in improving customer experiences through personalized recommendations and real-time updates.
-Finance and Banking: In financial services, Kafka is crucial for processing transactions, monitoring fraud in real-time, managing multiple payment gateways, and ensuring regulatory compliance through reliable, time-sensitive data processing.
-Telecommunications: Kafka supports the high throughput of event processing needed for network monitoring, real-time customer data updates, and billing systems in the telecommunications sector.
-Healthcare: Kafka facilitates the real-time processing of patient data, streamlining of hospital operations, and integration of various systems (like electronic health records) for better patient care.
-IoT (Internet of Things): Kafka is ideal for IoT platforms as it can handle massive streams of sensor data, enabling real-time analytics and decision-making for devices in smart homes, industrial IoT, and smart cities.
-Media and Entertainment: In media streaming services, Kafka supports real-time processing and monitoring of viewer data to provide content recommendations, manage streaming services, and handle large user loads effectively.
-Automotive: Kafka is used in the automotive industry for real-time analytics of vehicle telemetry data, enhancing predictive maintenance, safety features, and autonomous driving technologies.
+
+* __Finance and Banking__: In financial services, Kafka is crucial for processing transactions, monitoring fraud in real-time, managing multiple payment gateways, and ensuring regulatory compliance through reliable, time-sensitive data processing.
+
+* __Telecommunications__: Kafka supports the high throughput of event processing needed for network monitoring, real-time customer data updates, and billing systems in the telecommunications sector.
+
+* __Healthcare__: Kafka facilitates the real-time processing of patient data, streamlining of hospital operations, and integration of various systems (like electronic health records) for better patient care.
+
+* __IoT (Internet of Things)__: Kafka is ideal for IoT platforms as it can handle massive streams of sensor data, enabling real-time analytics and decision-making for devices in smart homes, industrial IoT, and smart cities.
+
+* __Media and Entertainment__: In media streaming services, Kafka supports real-time processing and monitoring of viewer data to provide content recommendations, manage streaming services, and handle large user loads effectively.
+
+* __Automotive__: Kafka is used in the automotive industry for real-time analytics of vehicle telemetry data, enhancing predictive maintenance, safety features, and autonomous driving technologies.
+
 These domains benefit significantly from Kafka's real-time data processing, durability, and scalability features, making it a central component in their technology stacks.
 
 ## Links
