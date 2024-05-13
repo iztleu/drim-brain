@@ -420,7 +420,23 @@ https://medium.com/@durgaswaroop/a-practical-introduction-to-kafka-storage-inter
 
 https://thehoard.blog/how-kafkas-storage-internals-work-3a29b02e026
 
-## Log Compaction
+## Retention
+
+One of Kafka's core features is message retention, which is crucial for determining how long messages should remain available before being deleted or compacted. Here’s a detailed look at how retention works in Kafka:
+
+1. __Time-Based Retention__: Messages in Kafka can be retained based on time. This is controlled by the `retention.ms` configuration, which specifies the duration (in milliseconds) for which messages are to be kept in a log. For instance, if set to `604800000`, messages will be retained for 7 days. After this period, older messages are eligible for deletion during the log cleanup process.
+
+2. __Size-Based Retention__: Kafka also allows configuring retention based on the size of the log. The retention.bytes setting limits the total size of log entries stored on a broker. If the log grows beyond this size, the oldest messages are deleted until the log is within the limit.
+
+3. __Compaction__: Kafka offers a unique retention method called compaction, which ensures that the log only retains the latest value for each key. This is particularly useful for restoring state in applications or systems where only the last state is necessary. Log compaction is controlled by the cleanup.policy configuration, which can be set to compact. In this case, Kafka keeps the latest value for each key and deletes any earlier values for the same key as it cleans up.
+
+4. __Retention Policy Configuration__: Retention policies can be set at the broker level or can be overridden by topic-specific configurations. This flexibility allows fine-grained control over data retention based on the specific requirements of different applications using Kafka.
+
+5. __Deletion and Cleanup__: Kafka periodically runs a cleanup process to enforce the retention policy. This process deletes old log segments that are beyond the retention limits. The frequency of this cleanup is controlled by settings such as `log.cleanup.interval.ms`.
+
+Retention in Kafka is an essential aspect of managing storage and ensuring that the data on the Kafka cluster is in line with the storage policies and requirements of applications. It helps in balancing storage management and performance needs effectively.
+
+### Compaction
 
 Log compaction gives us a more granular retention mechanism so that we are guaranteed to retain at least the last update for each primary key (message key also used in partitioning). By doing this we guarantee that the log contains a full snapshot of the final value for every key not just keys that changed recently. This means downstream consumers can restore their own state off this topic without us having to retain a complete log of all changes.
 
@@ -433,8 +449,6 @@ The compaction is done in the background by periodically recopying log segments.
 ## Quotas
 
 Having quotas protects against these issues and is all the more important in large multi-tenant clusters where a small set of badly behaved clients can degrade user experience for the well behaved ones.
-
-## Zookeeper
 
 ## Use Cases
 
