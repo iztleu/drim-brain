@@ -74,6 +74,96 @@ Partitions are distributed across the cluster:
 
 ![Topics and Partitions](_images/topics-and-partitions.png)
 
+### Changing Partition Count
+
+Changing the partition count of a topic in Apache Kafka involves increasing the number of partitions for a given topic. This is a common task when you need to scale a topic to support higher throughput. Below is a guide on how to do it and some of the implications of such a change.
+
+#### How to Change Partition Count
+
+1. __Determine the New Partition Count__:
+
+Decide how many partitions you want for your topic. This is usually based on the throughput requirements and the number of consumers you plan to have.
+
+2. __Use the Kafka Admin Client__:
+
+You can change the partition count using the Kafka Admin Client command line tool or programmatically via the AdminClient API in your Kafka client library.
+
+  * __Command Line__:
+
+  You can use the kafka-topics.sh script included in the Kafka distribution. Here’s the command to alter the partition count:
+
+  ```bash
+  kafka-topics.sh --bootstrap-server <broker-list> --alter --topic <topic-name> --partitions <new-partition-count>
+  ```
+
+  Replace `<broker-list>` with your Kafka broker addresses, `<topic-name>` with your topic, and `<new-partition-count>` with the desired number of partitions.
+
+  * __Programmatically__:
+
+  Using C#, for example, you can use the `IAdminClient` interface to alter the partition count:
+
+  ```csharp
+  using System;
+  using System.Collections.Generic;
+  using System.Threading.Tasks;
+  using Confluent.Kafka;
+  using Confluent.Kafka.Admin;
+
+  public class KafkaAdminExample
+  {
+      public static async Task Main(string[] args)
+      {
+          string bootstrapServers = "localhost:9092"; // Replace with your Kafka broker's address
+          string topicName = "example-topic"; // Replace with your topic name
+          int newPartitionCount = 10; // Desired number of partitions
+
+          var config = new AdminClientConfig { BootstrapServers = bootstrapServers };
+
+          using (var adminClient = new AdminClientBuilder(config).Build())
+          {
+              try
+              {
+                  // Define the new partition count for the topic
+                  var newPartitions = new List<PartitionsSpecification> {
+                      new PartitionsSpecification { Topic = topicName, IncreaseTo = newPartitionCount }
+                  };
+
+                  // Perform the partition count increase
+                  await adminClient.CreatePartitionsAsync(newPartitions);
+
+                  Console.WriteLine($"Partition count for topic '{topicName}' increased successfully.");
+              }
+              catch (CreatePartitionsException e)
+              {
+                  Console.WriteLine($"An error occurred: {e.Results[0].Error.Reason}");
+              }
+          }
+      }
+  }
+  ```
+
+#### Implications of Changing Partition Count
+
+1. __Data Distribution__:
+
+* New partitions will not have any existing data. Data will start populating in new partitions based on the incoming messages.
+* Data in the existing partitions will remain as is, which might lead to uneven data distribution unless a rebalance or redistribution of data is performed.
+
+2. __Consumer Group Impact__:
+
+* If using the `subscribe()` API, consumers will automatically detect new partitions and start consuming from them.
+* There might be a temporary imbalance in workload among consumers as new partitions might be assigned to some consumers and not others.
+
+3. __Producer Performance__:
+
+* Producers might see a performance impact as they start distributing messages across more partitions, which can lead to higher latency if not managed properly.
+
+4. __No Shrinking__:
+
+* Kafka does not support reducing the number of partitions for a topic. If you need fewer partitions, you must create a new topic with fewer partitions and migrate the data.
+
+Changing the partition count can help with scaling your Kafka topic, but it should be done with careful consideration of these implications to avoid performance degradation and data imbalance.
+
 ## Replication
 
 To improve availability, each topic can be replicated onto multiple brokers. For each partition, one of the brokers is the leader, and the other brokers are the followers.
@@ -343,6 +433,8 @@ The compaction is done in the background by periodically recopying log segments.
 ## Quotas
 
 Having quotas protects against these issues and is all the more important in large multi-tenant clusters where a small set of badly behaved clients can degrade user experience for the well behaved ones.
+
+## Zookeeper
 
 ## Use Cases
 
