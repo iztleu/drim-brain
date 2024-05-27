@@ -19,7 +19,7 @@ public class ConsumerHostedService(
         {
             try
             {
-                await Task.Delay(30, stoppingToken);
+                await Task.Delay(5, stoppingToken);
 
                 var consumeResult = _consumer.Consume(stoppingToken);
 
