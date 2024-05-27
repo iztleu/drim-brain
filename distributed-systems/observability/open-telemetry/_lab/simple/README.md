@@ -1,4 +1,4 @@
-# OpenTelemetry Lab
+# OpenTelemetry Lab. Simple Setup
 
 Applications of the system:
 

@@ -1,0 +1,1 @@
+# OpenTelemetry Lab. Kubernetes Setup

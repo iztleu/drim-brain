@@ -1,0 +1,15 @@
+sidecar:
+  dashboards:
+    enabled: true
+    searchNamespaces: "ALL"
+  datasources:
+    enabled: true
+    searchNamespaces: "ALL"
+
+persistence:
+  enabled: true
+  storageClassName: ${storage_class_name}
+  size: ${storage_size}
+
+admin:
+  existingSecret: ${admin_secret_name}

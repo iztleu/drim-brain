@@ -358,5 +358,6 @@ terraform.tfstate
 terraform.tfstate.backup
 
 k3s_kubeconfig.yaml
+kubeconfig
 
 .vscode
