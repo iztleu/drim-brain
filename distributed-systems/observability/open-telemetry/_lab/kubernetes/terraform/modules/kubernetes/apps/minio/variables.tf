@@ -1,13 +1,13 @@
 variable "namespace" {
   type = string
-  default = "observability"
+  default = "minio"
 }
 
 variable "storage_class_name" {
   type = string
 }
 
-variable "grafana_url" {
+variable "minio_console_url" {
   type = string
 }
 
@@ -19,14 +19,6 @@ variable "traefik_entry_point" {
   type = string
 }
 
-variable "prometheus_storage_size" {
-  type = string
-}
-
-variable "prometheus_url" {
-  type = string
-}
-
-variable "alertmanager_url" {
+variable "main_tenant_storage_size" {
   type = string
 }

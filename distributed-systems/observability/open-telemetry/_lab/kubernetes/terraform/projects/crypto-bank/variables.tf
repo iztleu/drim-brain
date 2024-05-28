@@ -37,7 +37,12 @@ variable "acme_email" {
   type = string
 }
 
-variable "grafana_storage_size" {
+variable "prometheus_storage_size" {
   type = string
-  default = "10Gi"
+  default = "50Gi"
+}
+
+variable "minio_main_tenant_storage_size" {
+  type = string
+  default = "3Gi"
 }

@@ -22,12 +22,24 @@ module "traefik_features" {
   cert_manager_cluster_issuer = module.cert_manager_features.cluster_issuer
 }
 
+module "minio" {
+  source = "../../modules/kubernetes/apps/minio"
+
+  storage_class_name = "hcloud-volumes"
+  main_tenant_storage_size = var.minio_main_tenant_storage_size
+  minio_console_url = "minio.${var.infra_url}"
+  cert_manager_cluster_issuer = module.cert_manager_features.cluster_issuer
+  traefik_entry_point = var.traefik_entry_point
+}
+
 module "observability" {
   source = "../../modules/kubernetes/apps/observability"
 
   storage_class_name = "hcloud-volumes"
-  grafana_storage_size = var.grafana_storage_size
   grafana_url = "grafana.${var.infra_url}"
   cert_manager_cluster_issuer = module.cert_manager_features.cluster_issuer
   traefik_entry_point = var.traefik_entry_point
+  prometheus_storage_size = var.prometheus_storage_size
+  prometheus_url = "prometheus.${var.infra_url}"
+  alertmanager_url = "alertmanager.${var.infra_url}"
 }
