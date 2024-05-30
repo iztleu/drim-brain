@@ -396,6 +396,13 @@ module "kube-hetzner" {
   # Example:
   # traefik_additional_options = ["--log.level=DEBUG", "--tracing=true"]
 
+  traefik_additional_options = [
+    "--api",
+    "--api.insecure",
+    "--api.dashboard=true",
+    "--providers.kubernetescrd.allowCrossNamespace=true",
+  ]
+
   # By default traefik image tag is an empty string which uses latest image tag.
   # The default is "".
   # traefik_image_tag = "v3.0.0-beta5"

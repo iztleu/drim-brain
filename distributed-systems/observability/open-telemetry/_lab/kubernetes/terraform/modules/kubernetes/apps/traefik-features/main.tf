@@ -47,3 +47,19 @@ resource "kubernetes_manifest" "ingress_route" {
     }
   }
 }
+
+resource "kubernetes_manifest" "trusted_ips_middleware" {
+  manifest = {
+    apiVersion = "traefik.io/v1alpha1"
+    kind       = "Middleware"
+    metadata = {
+      name      = "trusted-ips"
+      namespace = var.namespace
+    }
+    spec = {
+      ipAllowList = {
+        sourceRange = var.trusted_ips
+      }
+    }
+  }
+}

@@ -20,6 +20,7 @@ module "traefik_features" {
   traefik_entry_point = var.traefik_entry_point
   dashboard_url = "traefik.${var.infra_url}"
   cert_manager_cluster_issuer = module.cert_manager_features.cluster_issuer
+  trusted_ips = var.trusted_ips
 }
 
 module "minio" {
@@ -42,4 +43,7 @@ module "observability" {
   prometheus_storage_size = var.prometheus_storage_size
   prometheus_url = "prometheus.${var.infra_url}"
   alertmanager_url = "alertmanager.${var.infra_url}"
+  s3_endpoint = module.minio.main_tenant_endpoint
+  s3_access_key_id = module.minio.main_tenant_access_key
+  s3_secret_access_key = module.minio.main_tenant_secret_access
 }

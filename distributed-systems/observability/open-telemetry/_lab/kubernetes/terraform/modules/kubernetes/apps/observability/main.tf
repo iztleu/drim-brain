@@ -202,3 +202,121 @@ resource "kubernetes_manifest" "alertmanager_ingressroute" {
     }
   }
 }
+
+# Loki
+
+resource "helm_release" "loki" {
+  name       = "loki"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "loki"
+  version    = "6.6.2"
+  namespace  = kubernetes_namespace.observability.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/helm/loki/values.yaml.tpl", {
+      s3_endpoint = var.s3_endpoint,
+      s3_access_key_id = var.s3_access_key_id,
+      s3_secret_access_key = var.s3_secret_access_key,
+      loki_chunks_cache_allocated_memory = var.loki_chunks_cache_allocated_memory,
+    })
+  ]
+}
+
+resource "kubernetes_config_map" "grafana_loki_datasource" {
+  metadata {
+    name = "grafana-loki-datasource"
+    namespace = kubernetes_namespace.observability.metadata[0].name
+    labels = {
+      grafana_datasource = "1"
+    }
+  }
+
+  data = {
+    "loki-datasource.yaml" = <<-EOT
+      apiVersion: 1
+      datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki-read:3100  # Replace with your Loki service URL
+          isDefault: false
+          jsonData:
+            maxLines: 1000
+      EOT
+  }
+}
+
+# Tempo
+
+resource "helm_release" "tempo" {
+  name       = "tempo"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "tempo-distributed"
+  version    = "1.9.11"
+  namespace  = kubernetes_namespace.observability.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/helm/tempo/values.yaml.tpl", {
+      s3_endpoint = var.s3_endpoint,
+      s3_access_key_id = var.s3_access_key_id,
+      s3_secret_access_key = var.s3_secret_access_key,
+    })
+  ]
+}
+
+resource "kubernetes_config_map" "grafana_tempo_datasource" {
+  metadata {
+    name      = "grafana-tempo-datasource"
+    namespace = kubernetes_namespace.observability.metadata[0].name
+    labels = {
+      grafana_datasource = "1"
+    }
+  }
+
+  data = {
+    "tempo-datasource.yaml" = <<-EOT
+      apiVersion: 1
+      datasources:
+        - name: Tempo
+          type: tempo
+          access: proxy
+          url: http://tempo-query-frontend:3100
+          isDefault: false
+          jsonData:
+            httpMethod: POST
+      EOT
+  }
+}
+
+# OpenTelemetry Collector DaemonSet
+
+resource "helm_release" "open-telemetry-collector-daemonset" {
+  name       = "open-telemetry-collector-daemonset"
+  repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+  chart      = "opentelemetry-collector"
+  version    = "0.92.0"
+  namespace  = kubernetes_namespace.observability.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/helm/open-telemetry-collector/daemonset.values.yaml.tpl", {
+      loki_endpoint = "http://loki-write:3100/loki/api/v1/push",
+      tempo_endpoint = "http://tempo-ingester:3100",
+    })
+  ]
+}
+
+# OpenTelemetry Collector Deployment
+
+resource "helm_release" "open-telemetry-collector-deployment" {
+  name       = "open-telemetry-collector-deployment"
+  repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+  chart      = "opentelemetry-collector"
+  version    = "0.92.0"
+  namespace  = kubernetes_namespace.observability.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/helm/open-telemetry-collector/deployment.values.yaml.tpl", {
+      loki_endpoint = "http://loki-write:3100/loki/api/v1/push",
+    })
+  ]
+}

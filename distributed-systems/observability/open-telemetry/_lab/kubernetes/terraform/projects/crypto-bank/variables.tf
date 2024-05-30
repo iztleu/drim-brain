@@ -46,3 +46,7 @@ variable "minio_main_tenant_storage_size" {
   type = string
   default = "3Gi"
 }
+
+variable "trusted_ips" {
+  type = list
+}

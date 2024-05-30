@@ -14,3 +14,7 @@ variable "dashboard_url" {
 variable "cert_manager_cluster_issuer" {
   type = string
 }
+
+variable "trusted_ips" {
+  type = list
+}
