@@ -9,4 +9,9 @@ module "crypto-bank" {
   infra_url = "infra.drim.city"
   acme_email = "dmitriy.melnik@drim.dev"
   trusted_ips = ["65.108.254.217"]
+  postgres_storage_size = "10Gi"
+}
+
+module "argocd" {
+    source = "./argocd"
 }

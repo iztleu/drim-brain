@@ -50,3 +50,7 @@ variable "minio_main_tenant_storage_size" {
 variable "trusted_ips" {
   type = list
 }
+
+variable "postgres_storage_size" {
+  type = string
+}
