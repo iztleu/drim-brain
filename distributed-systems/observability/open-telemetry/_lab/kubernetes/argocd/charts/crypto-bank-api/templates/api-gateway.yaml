@@ -55,6 +55,16 @@ spec:
     name: letsencrypt
 ---
 apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-prefix-api
+  namespace: default
+spec:
+  stripPrefix:
+    prefixes:
+    - /api
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: api-gateway
@@ -68,5 +78,8 @@ spec:
     services:
     - name: api-gateway
       port: 80
+    middlewares:
+    - name: strip-prefix-api
+      namespace: default
   tls:
     secretName: api-gateway-cert
