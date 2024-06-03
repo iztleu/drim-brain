@@ -88,12 +88,6 @@ resource "kubernetes_manifest" "grafana_ingressroute" {
               port = 80
             }
           ]
-          middlewares = [
-            {
-              name = "trusted-ips"
-              namespace = "traefik"
-            }
-          ]
         }
       ]
       tls = {

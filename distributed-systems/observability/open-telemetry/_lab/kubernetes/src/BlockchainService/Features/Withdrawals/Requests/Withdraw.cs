@@ -45,7 +45,7 @@ internal static class Withdraw
             activity!.AddTag("currency", currency);
             activity.AddTag("amount", amount);
 
-            await Task.Delay(Random.Shared.Next(50, 100), cancellationToken);
+            await Task.Delay(Random.Shared.Next(20, 50), cancellationToken);
 
             _logger.LogInformation("Transaction sent");
 

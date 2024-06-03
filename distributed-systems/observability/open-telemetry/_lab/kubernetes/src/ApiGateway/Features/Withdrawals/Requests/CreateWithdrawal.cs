@@ -1,5 +1,6 @@
+using ApiGateway.Common.Metrics;
+using ApiGateway.Features.Withdrawals.Metrics;
 using ApiGateway.Features.Withdrawals.Models;
-using ApiGateway.Metrics;
 using BankingService.Client;
 using Common.Web.Endpoints;
 using Grpc.Core;
@@ -19,30 +20,32 @@ public static class CreateWithdrawal
             app.MapPost(Path, async Task<Created<WithdrawalModel>> (
                     RequestBody body,
                     [FromServices] BankingService.Client.Withdrawals.WithdrawalsClient withdrawalsClient,
-                    [FromServices] ApiGatewayMetrics metrics,
+                    [FromServices] RequestMetrics requestMetrics,
+                    [FromServices] WithdrawalsMetrics withdrawalsMetrics,
                     [FromServices] ILogger<Endpoint> logger,
                     CancellationToken cancellationToken) =>
-                {
-                    var request = new CreateWithdrawalRequest
+                    await requestMetrics.Measure("CreateWithdrawal", async () =>
                     {
-                        UserId = body.UserId,
-                        AccountNumber = body.AccountNumber,
-                        Currency = body.Currency,
-                        Amount = body.Amount,
-                        CryptoAddress = body.CryptoAddress,
-                    };
+                        var request = new CreateWithdrawalRequest
+                        {
+                            UserId = body.UserId,
+                            AccountNumber = body.AccountNumber,
+                            Currency = body.Currency,
+                            Amount = body.Amount,
+                            CryptoAddress = body.CryptoAddress,
+                        };
 
-                    var reply = await withdrawalsClient.CreateWithdrawalAsync(request,
-                        new CallOptions(cancellationToken: cancellationToken));
+                        var reply = await withdrawalsClient.CreateWithdrawalAsync(request,
+                            new CallOptions(cancellationToken: cancellationToken));
 
-                    var withdrawalModel = MapFrom(reply.Withdrawal);
+                        var withdrawalModel = MapFrom(reply.Withdrawal);
 
-                    metrics.WithdrawalsCreated(1);
+                        withdrawalsMetrics.WithdrawalsCreated(1);
 
-                    logger.LogInformation("Withdrawal created: {Withdrawal}", withdrawalModel);
+                        logger.LogInformation("Withdrawal created: {Withdrawal}", withdrawalModel);
 
-                    return TypedResults.Created($"{Path}/{withdrawalModel.Id}", withdrawalModel);
-                })
+                        return TypedResults.Created($"{Path}/{withdrawalModel.Id}", withdrawalModel);
+                    }))
                 .AllowAnonymous();
 
             static WithdrawalModel MapFrom(WithdrawalDto withdrawal) => new(withdrawal.Id, withdrawal.AccountNumber,

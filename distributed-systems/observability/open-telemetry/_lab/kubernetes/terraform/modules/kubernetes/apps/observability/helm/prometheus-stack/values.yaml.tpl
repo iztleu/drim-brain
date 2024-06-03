@@ -26,3 +26,4 @@ prometheus:
             requests:
               storage: ${storage_size}
         selector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false

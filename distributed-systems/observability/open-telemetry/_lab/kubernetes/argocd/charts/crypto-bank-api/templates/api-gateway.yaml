@@ -40,6 +40,19 @@ spec:
         - name: Clients__BankingService
           value: http://banking-service:80
 ---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: api-gateway
+  labels:
+    release: prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  endpoints:
+  - port: web
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
