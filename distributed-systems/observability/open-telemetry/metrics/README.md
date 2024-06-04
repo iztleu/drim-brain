@@ -130,4 +130,12 @@ Each methodology offers a unique perspective on monitoring:
 
 Combining these methodologies can provide comprehensive insights into the health and performance of applications and systems.
 
+## Links
+
+* https://opentelemetry.io/docs/concepts/signals/metrics/
+* https://opentelemetry.io/docs/specs/semconv/general/metrics/
+* https://www.brendangregg.com/usemethod.html
+* https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services/
+* https://sre.google/sre-book/monitoring-distributed-systems/
+
 #metrics
