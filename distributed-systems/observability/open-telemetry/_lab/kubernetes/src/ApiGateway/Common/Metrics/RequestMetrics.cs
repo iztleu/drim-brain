@@ -19,28 +19,28 @@ public class RequestMetrics
         var meter = meterFactory.Create(MeterName);
 
         _requests = meter.CreateCounter<int>(
-            "drim.city.api_gateway.requests",
+            "city.drim.api_gateway.requests",
             description: "Total number of requests");
 
         _requestsSucceeded = meter.CreateCounter<int>(
-            "drim.city.api_gateway.requests.succeeded",
+            "city.drim.api_gateway.requests.succeeded",
             description: "Total number of requests succeeded");
 
         _requestsFailed = meter.CreateCounter<int>(
-            "drim.city.api_gateway.requests.failed",
+            "city.drim.api_gateway.requests.failed",
             description: "Total number of requests failed");
 
         _requestsInProgress = meter.CreateUpDownCounter<int>(
-            "drim.city.api_gateway.requests.in_progress",
+            "city.drim.api_gateway.requests.in_progress",
             description: "Number of requests in progress");
 
         _requestDuration = meter.CreateHistogram<double>(
-            "drim.city.api_gateway.request_duration",
+            "city.drim.api_gateway.request_duration",
             unit: "ms",
             description: "Request duration in milliseconds");
 
         _exceptions = meter.CreateCounter<int>(
-            "drim.city.api_gateway.exceptions",
+            "city.drim.api_gateway.exceptions",
             description: "Total number of exceptions");
     }
 
