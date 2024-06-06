@@ -12,18 +12,20 @@ grafana:
   sidecar:
     datasources:
       enabled: true
-      url: http://prometheus-stack-kube-prom-prometheus:9090/
+      defaultDatasourceEnabled: false
+      isDefaultDatasource: false
+#      url: http://prometheus-stack-kube-prom-prometheus:9090/
 
 prometheus:
-  enabled: true
-  prometheusSpec:
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: ${storage_class_name}
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: ${storage_size}
-        selector: {}
-    serviceMonitorSelectorNilUsesHelmValues: false
+  enabled: false
+#  prometheusSpec:
+#    storageSpec:
+#      volumeClaimTemplate:
+#        spec:
+#          storageClassName: ${storage_class_name}
+#          accessModes: ["ReadWriteOnce"]
+#          resources:
+#            requests:
+#              storage: ${storage_size}
+#        selector: {}
+#    serviceMonitorSelectorNilUsesHelmValues: false

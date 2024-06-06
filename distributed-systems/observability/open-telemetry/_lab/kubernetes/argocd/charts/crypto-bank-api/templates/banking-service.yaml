@@ -66,6 +66,12 @@ spec:
           value: http://+:80
         - name: Kestrel__Endpoints__gRPC__Protocols
           value: Http2
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://$(NODE_IP):4317
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor

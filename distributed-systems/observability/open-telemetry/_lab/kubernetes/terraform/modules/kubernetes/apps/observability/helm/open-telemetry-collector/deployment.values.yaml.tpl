@@ -7,12 +7,23 @@ presets:
   clusterMetrics:
     enabled: true
   kubernetesEvents:
-    enabled: true
+    enabled: false
 
 config:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: "0.0.0.0:4317"
+        http:
+          endpoint: "0.0.0.0:4318"
   exporters:
     loki:
       endpoint: ${loki_endpoint}
+    otlp:
+      endpoint: ${tempo_endpoint}
+      tls:
+        insecure: true
   processors:
     resourcedetection:
       detectors: ["env", "system"]
@@ -40,3 +51,8 @@ config:
         - resourcedetection
         - transform/drop_unneeded_resource_attributes
         - batch
+      traces:
+        receivers:
+        - otlp
+        exporters:
+        - otlp

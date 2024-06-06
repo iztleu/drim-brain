@@ -9,21 +9,23 @@ presets:
   kubeletMetrics:
     enabled: false
   logsCollection:
-    enabled: true
+    enabled: false
 
 config:
   receivers:
     otlp:
       protocols:
         grpc:
-          endpoint: "localhost:1234"
+          endpoint: "0.0.0.0:4317"
         http:
-          endpoint: "localhost:5678"
+          endpoint: "0.0.0.0:4318"
   exporters:
     loki:
       endpoint: ${loki_endpoint}
     otlp:
       endpoint: ${tempo_endpoint}
+      tls:
+        insecure: true
   processors:
     resourcedetection:
       detectors: ["env", "system"]
@@ -54,7 +56,5 @@ config:
       traces:
         receivers:
         - otlp
-        processors:
-        - batch
         exporters:
         - otlp

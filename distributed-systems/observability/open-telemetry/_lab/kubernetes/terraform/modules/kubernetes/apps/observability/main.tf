@@ -97,58 +97,58 @@ resource "kubernetes_manifest" "grafana_ingressroute" {
   }
 }
 
-resource "kubernetes_manifest" "prometheus_cert" {
-  manifest = {
-    apiVersion = "cert-manager.io/v1"
-    kind       = "Certificate"
-    metadata = {
-      name      = local.prometheus_cert
-      namespace = kubernetes_namespace.observability.metadata[0].name
-    }
-    spec = {
-      commonName = var.prometheus_url
-      secretName = local.prometheus_cert
-      dnsNames = [
-        var.prometheus_url
-      ]
-      issuerRef = {
-        kind = "ClusterIssuer"
-        name = var.cert_manager_cluster_issuer
-      }
-    }
-  }
-}
+# resource "kubernetes_manifest" "prometheus_cert" {
+#   manifest = {
+#     apiVersion = "cert-manager.io/v1"
+#     kind       = "Certificate"
+#     metadata = {
+#       name      = local.prometheus_cert
+#       namespace = kubernetes_namespace.observability.metadata[0].name
+#     }
+#     spec = {
+#       commonName = var.prometheus_url
+#       secretName = local.prometheus_cert
+#       dnsNames = [
+#         var.prometheus_url
+#       ]
+#       issuerRef = {
+#         kind = "ClusterIssuer"
+#         name = var.cert_manager_cluster_issuer
+#       }
+#     }
+#   }
+# }
 
-resource "kubernetes_manifest" "prometheus_ingressroute" {
-  manifest = {
-    apiVersion = "traefik.io/v1alpha1"
-    kind       = "IngressRoute"
-    metadata = {
-      name      = "prometheus"
-      namespace = kubernetes_namespace.observability.metadata[0].name
-    }
-    spec = {
-      entryPoints = [
-        var.traefik_entry_point
-      ]
-      routes = [
-        {
-          match = "Host(`${var.prometheus_url}`)"
-          kind  = "Rule"
-          services = [
-            {
-              name = "prometheus-stack-kube-prom-prometheus"
-              port = 9090
-            }
-          ]
-        }
-      ]
-      tls = {
-        secretName = local.prometheus_cert
-      }
-    }
-  }
-}
+# resource "kubernetes_manifest" "prometheus_ingressroute" {
+#   manifest = {
+#     apiVersion = "traefik.io/v1alpha1"
+#     kind       = "IngressRoute"
+#     metadata = {
+#       name      = "prometheus"
+#       namespace = kubernetes_namespace.observability.metadata[0].name
+#     }
+#     spec = {
+#       entryPoints = [
+#         var.traefik_entry_point
+#       ]
+#       routes = [
+#         {
+#           match = "Host(`${var.prometheus_url}`)"
+#           kind  = "Rule"
+#           services = [
+#             {
+#               name = "prometheus-stack-kube-prom-prometheus"
+#               port = 9090
+#             }
+#           ]
+#         }
+#       ]
+#       tls = {
+#         secretName = local.prometheus_cert
+#       }
+#     }
+#   }
+# }
 
 resource "kubernetes_manifest" "alertmanager_cert" {
   manifest = {
@@ -288,6 +288,51 @@ resource "kubernetes_config_map" "grafana_tempo_datasource" {
   }
 }
 
+# Mimir
+
+resource "helm_release" "mimir" {
+  name       = "mimir"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "mimir-distributed"
+  version    = "5.3.0"
+  namespace  = kubernetes_namespace.observability.metadata[0].name
+
+  values = [
+    templatefile("${path.module}/helm/mimir/values.yaml.tpl", {
+      s3_endpoint = var.s3_endpoint,
+      s3_access_key_id = var.s3_access_key_id,
+      s3_secret_access_key = var.s3_secret_access_key,
+    })
+  ]
+}
+
+resource "kubernetes_config_map" "grafana_mimir_datasource" {
+  metadata {
+    name      = "grafana-mimir-datasource"
+    namespace = kubernetes_namespace.observability.metadata[0].name
+    labels = {
+      grafana_datasource = "1"
+    }
+  }
+
+  data = {
+    "tempo-datasource.yaml" = <<-EOT
+      apiVersion: 1
+      datasources:
+        - name: Mimir
+          type: prometheus
+          access: proxy
+          url: http://mimir-query-frontend:8080/prometheus
+          isDefault: false
+          jsonData:
+            httpMethod: POST
+            httpHeaderName1: X-Scope-OrgID
+          secureJsonData:
+            httpHeaderValue1: grafana
+      EOT
+  }
+}
+
 # OpenTelemetry Collector DaemonSet
 
 resource "helm_release" "open-telemetry-collector-daemonset" {
@@ -300,7 +345,7 @@ resource "helm_release" "open-telemetry-collector-daemonset" {
   values = [
     templatefile("${path.module}/helm/open-telemetry-collector/daemonset.values.yaml.tpl", {
       loki_endpoint = "http://loki-write:3100/loki/api/v1/push",
-      tempo_endpoint = "http://tempo-ingester:3100",
+      tempo_endpoint = "http://tempo-distributor:4317",
     })
   ]
 }
@@ -317,6 +362,7 @@ resource "helm_release" "open-telemetry-collector-deployment" {
   values = [
     templatefile("${path.module}/helm/open-telemetry-collector/deployment.values.yaml.tpl", {
       loki_endpoint = "http://loki-write:3100/loki/api/v1/push",
+      tempo_endpoint = "http://tempo-distributor:4317",
     })
   ]
 }
