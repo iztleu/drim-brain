@@ -326,6 +326,7 @@ resource "kubernetes_manifest" "open_telemetry_collector_daemonset" {
           }
         }
       ]
+      hostNetwork = true
       config = templatefile("${path.module}/open-telemetry-collector/daemonset.config.yaml.tpl", {
         tempo_endpoint = "http://tempo-distributor:4317",
         prometheus_remote_write_endpoint = "http://mimir-distributor:8080/api/v1/push",

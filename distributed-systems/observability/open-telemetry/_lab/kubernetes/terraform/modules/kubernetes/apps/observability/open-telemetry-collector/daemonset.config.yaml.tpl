@@ -32,7 +32,7 @@ processors:
   batch:
 
 exporters:
-  otlp:
+  otlp/tempo:
     endpoint: ${tempo_endpoint}
     tls:
       insecure: true
@@ -49,7 +49,7 @@ service:
       processors:
       - batch
       exporters:
-      - otlp
+      - otlp/tempo
     metrics:
       receivers:
       - prometheus
