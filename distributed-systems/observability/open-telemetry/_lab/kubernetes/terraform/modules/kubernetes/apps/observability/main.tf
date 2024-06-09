@@ -4,12 +4,13 @@ resource "kubernetes_namespace" "observability" {
   }
 }
 
-# Prometheus, Alertmanager & Grafana
+# Alertmanager & Grafana
 
 locals {
   grafana_cert = "grafana-cert"
   prometheus_cert = "prometheus-cert"
   alertmanager_cert = "alertmanager-cert"
+  loki_tenant = "loki-otel-lab"
   mimir_tenant = "otel-lab"
 }
 
@@ -162,6 +163,7 @@ resource "helm_release" "loki" {
 
   values = [
     templatefile("${path.module}/loki/values.yaml.tpl", {
+      tenant = local.loki_tenant,
       s3_endpoint = var.s3_endpoint,
       s3_access_key_id = var.s3_access_key_id,
       s3_secret_access_key = var.s3_secret_access_key,
@@ -190,6 +192,9 @@ resource "kubernetes_config_map" "grafana_loki_datasource" {
           isDefault: false
           jsonData:
             maxLines: 1000
+            httpHeaderName1: X-Scope-OrgID
+          secureJsonData:
+            httpHeaderValue1: ${local.loki_tenant}
       EOT
   }
 }

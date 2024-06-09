@@ -1,17 +1,20 @@
 loki:
+  tenant_id: ${tenant}
   auth_enabled: false
+  querier:
+    multi_tenant_queries_enabled: false
   storage:
     bucketNames:
-      chunks: chunks
-      ruler: ruler
-      admin: admin
+      chunks: loki-chunks
+      ruler: loki-ruler
+      admin: loki-admin
     type: s3
     s3:
       endpoint: ${s3_endpoint}
       region: .
       secretAccessKey: ${s3_secret_access_key}
       accessKeyId: ${s3_access_key_id}
-      s3ForcePathStyle: false
+      s3ForcePathStyle: true
       insecure: true
   schemaConfig:
     configs:
