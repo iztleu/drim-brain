@@ -19,6 +19,13 @@ receivers:
         - action: labelmap
           regex: label_(.+)
           replacement: $$1
+  filelog:
+    include_file_path: true
+    include:
+    - /var/log/pods/*/*/*.log
+    operators:
+    - id: container-parser
+      type: container
   kubeletstats:
     collection_interval: 10s
     auth_type: "serviceAccount"
@@ -40,6 +47,8 @@ exporters:
     endpoint: ${prometheus_remote_write_endpoint}
     headers:
       "X-Scope-OrgID": ${prometheus_remote_write_org_id}
+  loki:
+    endpoint: ${loki_endpoint}
 
 service:
   pipelines:
@@ -58,3 +67,10 @@ service:
       - batch
       exporters:
       - prometheusremotewrite
+    logs:
+      receivers:
+      - filelog
+      processors:
+      - batch
+      exporters:
+      - loki

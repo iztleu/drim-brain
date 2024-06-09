@@ -332,10 +332,25 @@ resource "kubernetes_manifest" "open_telemetry_collector_daemonset" {
         }
       ]
       hostNetwork = true
+      volumeMounts = [
+        {
+          name = "varlog"
+          mountPath = "/var/log"
+        }
+      ]
+      volumes = [
+        {
+          name = "varlog"
+          hostPath = {
+            path = "/var/log"
+          }
+        }
+      ]
       config = templatefile("${path.module}/open-telemetry-collector/daemonset.config.yaml.tpl", {
         tempo_endpoint = "http://tempo-distributor:4317",
         prometheus_remote_write_endpoint = "http://mimir-distributor:8080/api/v1/push",
         prometheus_remote_write_org_id = local.mimir_tenant,
+        loki_endpoint = "http://loki-write:3100/loki/api/v1/push",
       })
     }
   }
@@ -351,6 +366,16 @@ resource "kubernetes_cluster_role" "open_telemetry_collector_daemonset_role" {
     api_groups = [""]
     resources = ["nodes/stats"]
     verbs = ["get", "list", "watch"]
+  }
+  rule {
+    api_groups = [""]
+    resources = ["pods", "nodes"]
+    verbs = ["get", "list", "watch"]
+  }
+  rule {
+    api_groups = [""]
+    resources = ["pods/log"]
+    verbs = ["get"]
   }
 }
 
