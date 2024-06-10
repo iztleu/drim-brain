@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Common.Telemetry;
 using FluentValidation;
 using MediatR;
@@ -46,6 +47,8 @@ internal static class Withdraw
             activity.AddTag("amount", amount);
 
             await Task.Delay(Random.Shared.Next(20, 50), cancellationToken);
+
+            activity.AddEvent(new ActivityEvent("Transaction sent"));
 
             _logger.LogInformation("Transaction sent");
 

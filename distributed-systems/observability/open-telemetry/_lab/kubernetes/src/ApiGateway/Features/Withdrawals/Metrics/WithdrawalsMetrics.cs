@@ -12,7 +12,7 @@ public class WithdrawalsMetrics
     {
         var meter = meterFactory.Create(MeterName);
 
-        _withdrawalsCreated = meter.CreateCounter<int>("drim.city.api_gateway.withdrawals.created");
+        _withdrawalsCreated = meter.CreateCounter<int>("city.drim.api_gateway.withdrawals.created");
     }
 
     public void WithdrawalsCreated(int count)
