@@ -137,5 +137,7 @@ Combining these methodologies can provide comprehensive insights into the health
 * https://www.brendangregg.com/usemethod.html
 * https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services/
 * https://sre.google/sre-book/monitoring-distributed-systems/
+* https://grafana.com/docs/mimir/latest/get-started/about-grafana-mimir-architecture/#the-read-path
+* https://opentelemetry.io/docs/kubernetes/operator/target-allocator/
 
 #metrics

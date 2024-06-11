@@ -144,4 +144,11 @@ Implementing tracing in distributed applications can significantly improve obser
 
 Implementing these best practices can enhance the observability of your distributed applications, leading to quicker issue resolution and improved performance.
 
+## Links
+
+* https://opentelemetry.io/docs/concepts/signals/traces/
+* https://grafana.com/docs/tempo/latest/operations/architecture/
+* https://www.w3.org/TR/trace-context/
+* https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing-concepts
+
 #traces
