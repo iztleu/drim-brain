@@ -1,9 +1,11 @@
+using System.Text.Json;
 using Elastic.Ingest.Elasticsearch;
 using Elastic.Ingest.Elasticsearch.DataStreams;
 using Elastic.Serilog.Sinks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -33,24 +35,29 @@ public static class TelemetryRegistrationExtensions
                 .AddAspNetCoreInstrumentation()
                 .AddGrpcClientInstrumentation()
                 .AddEntityFrameworkCoreInstrumentation()
-                .AddConsoleExporter()
                 .AddOtlpExporter());
 
-        builder.UseSerilog((context, configuration) =>
+        builder.ConfigureLogging((context, logging) =>
         {
-            configuration
-                .Enrich.FromLogContext()
-                .Enrich.WithSpan()
-                .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
-                .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
-                .Enrich.WithProperty("Version", context.Configuration["Version"])
-                .WriteTo.Console()
-                .WriteTo.Elasticsearch(new[] { new Uri("http://elasticsearch:9200") }, options =>
-                {
-                    options.DataStream = new DataStreamName("logs", "open-telemetry-lab", "drim");
-                    options.BootstrapMethod = BootstrapMethod.Silent;
-                });
+            logging.AddJsonConsole(options =>
+            {
+                options.IncludeScopes = true;
+                options.UseUtcTimestamp = true;
+                options.TimestampFormat = "yyyy-MM-ddTHH:mm:ssZ";
+            });
+            logging.Configure(options => options.ActivityTrackingOptions = ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId);
         });
+
+        // builder.UseSerilog((context, configuration) =>
+        // {
+        //     configuration
+        //         .Enrich.FromLogContext()
+        //         .Enrich.WithSpan()
+        //         .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
+        //         .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+        //         .Enrich.WithProperty("Version", context.Configuration["Version"])
+        //         .WriteTo.Console();
+        // });
 
         return services;
     }

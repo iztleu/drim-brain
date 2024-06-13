@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using BlockchainService.Features.Withdrawals.Logging;
 using Common.Telemetry;
 using FluentValidation;
 using MediatR;
@@ -36,7 +37,7 @@ internal static class Withdraw
 
             await Task.Delay(Random.Shared.Next(5, 10), cancellationToken);
 
-            _logger.LogInformation("Fee estimated");
+            WithdrawalsLogger.FeeEstimated(_logger);
         }
 
         private async Task<string> SendTransaction(string currency, double amount, string address,
@@ -50,7 +51,7 @@ internal static class Withdraw
 
             activity.AddEvent(new ActivityEvent("Transaction sent"));
 
-            _logger.LogInformation("Transaction sent");
+            WithdrawalsLogger.TransactionSent(_logger);
 
             return Guid.NewGuid().ToString();
         }

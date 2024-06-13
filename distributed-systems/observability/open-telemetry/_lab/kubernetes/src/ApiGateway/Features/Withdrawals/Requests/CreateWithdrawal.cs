@@ -1,4 +1,5 @@
 using ApiGateway.Common.Metrics;
+using ApiGateway.Features.Withdrawals.Logging;
 using ApiGateway.Features.Withdrawals.Metrics;
 using ApiGateway.Features.Withdrawals.Models;
 using BankingService.Client;
@@ -42,7 +43,7 @@ public static class CreateWithdrawal
 
                         withdrawalsMetrics.WithdrawalsCreated(1);
 
-                        logger.LogInformation("Withdrawal created: {Withdrawal}", withdrawalModel);
+                        WithdrawalsLogger.WithdrawalCreated(logger, withdrawalModel);
 
                         return TypedResults.Created($"{Path}/{withdrawalModel.Id}", withdrawalModel);
                     }))

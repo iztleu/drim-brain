@@ -1,5 +1,6 @@
 using BankingService.Database;
 using BankingService.Domain;
+using BankingService.Features.Withdrawals.Logging;
 using BlockchainService.Client;
 using FluentValidation;
 using Google.Protobuf.WellKnownTypes;
@@ -46,7 +47,7 @@ internal static class CreateWithdrawal
             await _db.Withdrawals.AddAsync(withdrawal, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Withdrawal created");
+            WithdrawalsLogger.WithdrawalCreated(_logger);
 
             return new() { Withdrawal = MapFrom(withdrawal) };
 

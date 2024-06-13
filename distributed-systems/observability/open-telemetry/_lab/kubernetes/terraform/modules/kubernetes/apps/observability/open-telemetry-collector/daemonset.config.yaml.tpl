@@ -26,6 +26,8 @@ receivers:
     operators:
     - id: container-parser
       type: container
+    - type: json_parser
+      id: json_parser
   kubeletstats:
     collection_interval: 10s
     auth_type: "serviceAccount"
@@ -37,6 +39,43 @@ receivers:
 
 processors:
   batch:
+  transform:
+    log_statements:
+    - context: log
+      conditions:
+      - attributes["LogLevel"] == "Trace"
+      statements:
+      - set(attributes["level"], "trace")
+    - context: log
+      conditions:
+      - attributes["LogLevel"] == "Debug"
+      statements:
+      - set(attributes["level"], "debug")
+    - context: log
+      conditions:
+      - attributes["LogLevel"] == "Information"
+      statements:
+      - set(attributes["level"], "info")
+    - context: log
+      conditions:
+      - attributes["LogLevel"] == "Warning"
+      statements:
+      - set(attributes["level"], "warning")
+    - context: log
+      conditions:
+      - attributes["LogLevel"] == "Error"
+      statements:
+      - set(attributes["level"], "error")
+    - context: log
+      conditions:
+      - attributes["LogLevel"] == "Critical"
+      statements:
+      - set(attributes["level"], "fatal")
+  attributes/loki_labels:
+    actions:
+    - action: insert
+      key: loki.attribute.labels
+      value: k8s.namespace.name, k8s.pod.name, k8s.container.name, level
 
 exporters:
   otlp/tempo:
@@ -71,6 +110,8 @@ service:
       receivers:
       - filelog
       processors:
+      - transform
+      - attributes/loki_labels
       - batch
       exporters:
       - loki
