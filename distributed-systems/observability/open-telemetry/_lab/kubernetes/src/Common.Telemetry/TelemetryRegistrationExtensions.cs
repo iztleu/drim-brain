@@ -47,18 +47,7 @@ public static class TelemetryRegistrationExtensions
             });
             logging.Configure(options => options.ActivityTrackingOptions = ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId);
         });
-
-        // builder.UseSerilog((context, configuration) =>
-        // {
-        //     configuration
-        //         .Enrich.FromLogContext()
-        //         .Enrich.WithSpan()
-        //         .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
-        //         .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
-        //         .Enrich.WithProperty("Version", context.Configuration["Version"])
-        //         .WriteTo.Console();
-        // });
-
+        
         return services;
     }
 

@@ -100,4 +100,8 @@ Loki supports multi-tenancy, allowing multiple users or teams to use a single Lo
 
 * __Elasticsearch__: Indexes full log content and specific fields, providing powerful search capabilities at the cost of higher storage requirements.
 
+## Links
+
+* https://grafana.com/oss/loki/
+
 #loki
