@@ -1,0 +1,71 @@
+@EthereumLab_HostAddress = http://localhost:5000
+
+### Get Ethereum info
+
+GET {{EthereumLab_HostAddress}}/info
+Accept: application/json
+
+### Create account in keystore
+
+POST {{EthereumLab_HostAddress}}/accounts/keystore
+Accept: application/json
+Content-Type: application/json
+
+{
+    "passphrase": "123456"
+}
+
+### Get account balance
+
+GET {{EthereumLab_HostAddress}}/accounts/0xaF49a5A8002Cf10D5F6583EE6946Ab1c329810d8/balance
+Accept: application/json
+
+### Send transaction
+
+POST {{EthereumLab_HostAddress}}/transactions/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "from": "0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438",
+    "to": "0xAa1daF5d48Fb9E31C713BddF32bE52EE6ba4B56f",
+    "valueInEther": 0.001,
+    "passphrase": "123456"
+}
+
+### Get transaction
+
+GET {{EthereumLab_HostAddress}}/transactions/0xc1ff2da05ffb653d753d795447484e5f099145219d2b2363903b196fae56c81c
+Accept: application/json
+
+### Get block
+
+GET {{EthereumLab_HostAddress}}/blocks/0x5f454a
+Accept: application/json
+
+### Create account and its corresponding private key
+
+POST {{EthereumLab_HostAddress}}/accounts
+Accept: application/json
+
+### Sign transaction
+
+POST {{EthereumLab_HostAddress}}/transactions/sign
+Accept: application/json
+Content-Type: application/json
+
+{
+    "privateKey": "0x711d9f8788c5c70eb8c345fa8114e4285ccb8c5253278dd1e52cf8c8a2110359",
+    "to": "0xAa1daF5d48Fb9E31C713BddF32bE52EE6ba4B56f",
+    "valueInEther": 0.001
+}
+
+### Send raw transaction
+
+POST {{EthereumLab_HostAddress}}/transactions/send-raw
+Accept: application/json
+Content-Type: application/json
+
+{
+    "rawTransaction": "02f87683aa36a7018502540be40085045953517082520894aa1daf5d48fb9e31c713bddf32be52ee6ba4b56f87038d7ea4c6800080c080a050799dad021537dc221fad4ba30d7095be768dba42b8ab4762b1cf725c09358ca02d7d7bda6ccffee7f4a26c87fbb80eddc310cf641d0049ea6faeffffb52c0f00"
+}
