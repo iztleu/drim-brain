@@ -1,0 +1,3 @@
+docker run --rm -v $(pwd):/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/SimpleStorage.sol
+
+docker run --rm -v $(pwd):/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/SimpleToken.sol
