@@ -1,0 +1,135 @@
+@EthereumLab_HostAddress = http://localhost:5000
+
+### Get Ethereum info
+
+GET {{EthereumLab_HostAddress}}/info
+Accept: application/json
+
+### Create account in keystore
+
+POST {{EthereumLab_HostAddress}}/accounts/keystore
+Accept: application/json
+Content-Type: application/json
+
+{
+    "passphrase": "123456"
+}
+
+### Get account balance
+
+GET {{EthereumLab_HostAddress}}/accounts/0xaF49a5A8002Cf10D5F6583EE6946Ab1c329810d8/balance
+Accept: application/json
+
+### Send transaction
+
+POST {{EthereumLab_HostAddress}}/transactions/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "from": "0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438",
+    "to": "0xC289C57fDcC906f5062602E05d3c2D4d66217C6B",
+    "valueInEther": 0.0014,
+    "passphrase": "123456"
+}
+
+### Get transaction
+
+GET {{EthereumLab_HostAddress}}/transactions/0xc1ff2da05ffb653d753d795447484e5f099145219d2b2363903b196fae56c81c
+Accept: application/json
+
+### Get block
+
+GET {{EthereumLab_HostAddress}}/blocks/0x5f454a
+Accept: application/json
+
+### Create account and its corresponding private key
+
+POST {{EthereumLab_HostAddress}}/accounts
+Accept: application/json
+
+### Sign transaction
+
+POST {{EthereumLab_HostAddress}}/transactions/sign
+Accept: application/json
+Content-Type: application/json
+
+{
+    "privateKey": "0x711d9f8788c5c70eb8c345fa8114e4285ccb8c5253278dd1e52cf8c8a2110359",
+    "to": "0xAa1daF5d48Fb9E31C713BddF32bE52EE6ba4B56f",
+    "valueInEther": 0.001
+}
+
+### Send raw transaction
+
+POST {{EthereumLab_HostAddress}}/transactions/send-raw
+Accept: application/json
+Content-Type: application/json
+
+{
+    "rawTransaction": "02f87683aa36a7018502540be40085045953517082520894aa1daf5d48fb9e31c713bddf32be52ee6ba4b56f87038d7ea4c6800080c080a050799dad021537dc221fad4ba30d7095be768dba42b8ab4762b1cf725c09358ca02d7d7bda6ccffee7f4a26c87fbb80eddc310cf641d0049ea6faeffffb52c0f00"
+}
+
+### Deploy SimpleStorage contract
+
+POST {{EthereumLab_HostAddress}}/contracts
+Accept: application/json
+Content-Type: application/json
+
+{
+    "privateKey": "0x711d9f8788c5c70eb8c345fa8114e4285ccb8c5253278dd1e52cf8c8a2110359",
+    "byteCode": "6080604052348015600e575f80fd5b506101438061001c5f395ff3fe608060405234801561000f575f80fd5b5060043610610034575f3560e01c806360fe47b1146100385780636d4ce63c14610054575b5f80fd5b610052600480360381019061004d91906100ba565b610072565b005b61005c61007b565b60405161006991906100f4565b60405180910390f35b805f8190555050565b5f8054905090565b5f80fd5b5f819050919050565b61009981610087565b81146100a3575f80fd5b50565b5f813590506100b481610090565b92915050565b5f602082840312156100cf576100ce610083565b5b5f6100dc848285016100a6565b91505092915050565b6100ee81610087565b82525050565b5f6020820190506101075f8301846100e5565b9291505056fea2646970667358221220c1d5c5c95a1fdb0d2d92955509861eccac53b5f7537ea71a16ddbb8b0ff3009064736f6c634300081a0033"
+}
+
+### Call SimpleStorage.get
+
+POST {{EthereumLab_HostAddress}}/contracts/simple-storage/0x2f04AF81df80B66672CfEB60ED5788F283b8B956/get
+Accept: application/json
+
+### Call SimpleStorage.set
+
+POST {{EthereumLab_HostAddress}}/contracts/simple-storage/0x2f04AF81df80B66672CfEB60ED5788F283b8B956/set
+Accept: application/json
+Content-Type: application/json
+
+{
+    "privateKey": "0x711d9f8788c5c70eb8c345fa8114e4285ccb8c5253278dd1e52cf8c8a2110359",
+    "value": 52
+}
+
+### Deploy ERC20 contract
+
+POST {{EthereumLab_HostAddress}}/contracts/erc20
+Accept: application/json
+Content-Type: application/json
+
+{
+    "privateKey": "0x711d9f8788c5c70eb8c345fa8114e4285ccb8c5253278dd1e52cf8c8a2110359"
+}
+
+### Call ERC20.balanceOf
+
+POST {{EthereumLab_HostAddress}}/contracts/erc20/0x523C8591Fbe215B5aF0bEad65e65dF783A37BCBC/balance
+Accept: application/json
+Content-Type: application/json
+
+{
+    "address": "0x32Be343B94f860124dC4fEe278FDCBD38C102D88"
+}
+
+### Call ERC20.transfer
+
+POST {{EthereumLab_HostAddress}}/contracts/erc20/0xe62a9f406839963E8ab6B43119f7C0eEa6abe098/transfer
+Accept: application/json
+Content-Type: application/json
+
+{
+    "privateKey": "0x711d9f8788c5c70eb8c345fa8114e4285ccb8c5253278dd1e52cf8c8a2110359",
+    "to": "0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438",
+    "value": 100
+}
+
+### Get ERC20 Transfer events
+
+GET {{EthereumLab_HostAddress}}/contracts/erc20/0x523C8591Fbe215B5aF0bEad65e65dF783A37BCBC/transfers
+Accept: application/json

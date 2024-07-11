@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Bank</title>
+</head>
+<body>
+    <p>Deposits:</p>
+    <ul id="deposits"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/depositsHub")
+            .build();
+        connection.start().then(function () {
+            console.info("Connection established")
+
+            var userId = getRandomInt(1, 10);
+            var li = document.createElement("li");
+            li.textContent = "UserId: " + userId;
+            document.getElementById("deposits").appendChild(li);
+
+            connection.stream("SubscribeForNewDeposits", userId)
+                .subscribe({
+                    next: (item) => {
+                        var li = document.createElement("li");
+                        li.textContent = JSON.stringify(item);
+                        document.getElementById("deposits").appendChild(li);
+                    },
+                    complete: () => {
+                        var li = document.createElement("li");
+                        li.textContent = "Streaming completed";
+                        document.getElementById("deposits").appendChild(li);
+                    },
+                    error: (err) => {
+                        var li = document.createElement("li");
+                        li.textContent = err;
+                        document.getElementById("deposits").appendChild(li);
+                    },
+                });
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+</body>
+</html>

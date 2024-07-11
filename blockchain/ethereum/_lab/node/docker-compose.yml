@@ -1,0 +1,88 @@
+version: "3.9"
+services:
+  execution:
+    stop_grace_period: 30m
+    container_name: sedge-execution-client
+    restart: unless-stopped
+    image: ${EC_IMAGE_VERSION}
+    networks:
+    - sedge
+    volumes:
+    - ${EC_DATA_DIR}:/var/lib/goethereum
+    - ${EC_JWT_SECRET_PATH}:/tmp/jwt/jwtsecret
+    ports:
+    - 30303:30303/tcp
+    - 30303:30303/udp
+    - 8008:8008/tcp
+    - 8545:8545
+    - 8546:8546
+    - 8551:8551
+    expose:
+    - 8545
+    - 8546
+    - 8551
+    command:
+    - --syncmode=${EC_SYNC_MODE}
+    - --http
+    - --http.addr=0.0.0.0
+    - --http.vhosts=*
+    - --http.corsdomain=*
+    - --http.api
+    - web3,eth,net,personal
+    - --datadir=/var/lib/goethereum
+    - --port=30303
+    - --http.port=8545
+    - --${NETWORK}
+    - --verbosity
+    - ${GETH_LOG_LEVEL}
+    - --ws
+    - --ws.addr=0.0.0.0
+    - --ws.port=8546
+    - --ws.api=engine,eth,web3,net,debug,personal
+    - --authrpc.jwtsecret=/tmp/jwt/jwtsecret
+    - --authrpc.addr=0.0.0.0
+    - --authrpc.port=8551
+    - --authrpc.vhosts=*
+    - --allow-insecure-unlock
+    - --metrics
+    - --metrics.port=8008
+  consensus:
+    stop_grace_period: 30s
+    container_name: sedge-consensus-client
+    restart: unless-stopped
+    image: ${CC_IMAGE_VERSION}
+    networks:
+    - sedge
+    volumes:
+    - ${CC_DATA_DIR}:/var/lib/prysm
+    - ${CC_JWT_SECRET_PATH}:/tmp/jwt/jwtsecret
+    ports:
+    - 19000:19000/tcp
+    - 19000:19000/udp
+    - 5054:5054/tcp
+    - 4000:4000
+    - 4001:4001
+    expose:
+    - 4000
+    - 4001
+    command:
+    - --${NETWORK}
+    - --p2p-tcp-port=19000
+    - --p2p-udp-port=19000
+    - --jwt-secret=/tmp/jwt/jwtsecret
+    - --rpc-host=0.0.0.0
+    - --rpc-port=4001
+    - --grpc-gateway-host=0.0.0.0
+    - --grpc-gateway-port=4000
+    - --datadir=/var/lib/prysm/
+    - --verbosity=${CC_LOG_LEVEL}
+    - --p2p-max-peers=${CC_PEER_COUNT}
+    - --execution-endpoint=${EC_AUTH_URL}
+    - --accept-terms-of-use
+    - --monitoring-host=0.0.0.0
+    - --monitoring-port=5054
+    - --checkpoint-sync-url=https://sepolia.checkpoint-sync.ethpandaops.io
+    - --genesis-beacon-api-url=https://sepolia.checkpoint-sync.ethpandaops.io
+networks:
+  sedge:
+    name: sedge-network

@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EthereumLab", "EthereumLab\EthereumLab.csproj", "{4FBA92B4-751A-4831-B466-DBCFEC5806BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FBA92B4-751A-4831-B466-DBCFEC5806BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FBA92B4-751A-4831-B466-DBCFEC5806BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FBA92B4-751A-4831-B466-DBCFEC5806BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FBA92B4-751A-4831-B466-DBCFEC5806BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

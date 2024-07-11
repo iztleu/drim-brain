@@ -1,0 +1,23 @@
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"personal_newAccount","params":["123456"],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438", "latest"],"id":1}' http://138.201.247.46:8545
+
+0xAa1daF5d48Fb9E31C713BddF32bE52EE6ba4B56f
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438", "latest"],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"personal_unlockAccount","params":["0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438", "123456", null],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0", "method": "eth_sendTransaction", "params": [{"from": "0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438", "to": "0xAa1daF5d48Fb9E31C713BddF32bE52EE6ba4B56f", "gas": "0x5208", "gasPrice": "0x3F5476A00", "value": "0x2386F26FC10000"}], "id": 1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"personal_lockAccount","params":["0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438"],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0xAa1daF5d48Fb9E31C713BddF32bE52EE6ba4B56f", "latest"],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getTransactionCount","params":["0xA4ab409d6660Ca653d7F8fe3E85a4259E0e5B438", "latest"],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":["0xc1ff2da05ffb653d753d795447484e5f099145219d2b2363903b196fae56c81c"],"id":1}' http://138.201.247.46:8545
+
+curl -X POST --header "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x5f454a", true],"id":1}' http://138.201.247.46:8545
