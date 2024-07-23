@@ -1,12 +1,14 @@
+using BlockchainService.Api;
 using BlockchainService.Database;
 using BlockchainService.Features.Deposits.Jobs;
+using Common.Kafka;
 using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
-    // We have to wait for the database to be ready. This is a temporary solution since .NET Aspire
+    // We have to wait for the database migration to execute. This is a temporary solution since .NET Aspire
     // does not support service restarts or startup dependencies yet
     await Task.Delay(5_000);
 }
@@ -14,6 +16,11 @@ if (builder.Environment.IsDevelopment())
 builder.AddServiceDefaults();
 
 builder.AddNpgsqlDbContext<BlockchainDbContext>("BlockchainServiceDb");
+
+builder.AddKafkaProducer<int, CryptoDepositCreatedEvent>("kafka", settings =>
+{
+    settings.SetValueSerializer(new KafkaJsonSerializer<CryptoDepositCreatedEvent>());
+});
 
 builder.Services.AddQuartz(q =>
 {

@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.1.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Common.Database\Common.Database.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Database\Common.Database.csproj" />
       <ProjectReference Include="..\BlockchainService\BlockchainService.csproj" />
     </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ var blockchainServiceMaintenance = builder.AddProject<Projects.BlockchainService
 var blockchainService = builder.AddProject<Projects.BlockchainService>("blockchain-service")
     .WithReference(blockchainServiceDb)
     .WithReference(kafka)
-    .WithReplicas(4);
+    .WithReplicas(1);
 
 var bankingServiceDb = builder.AddPostgres("banking-service-db")
     .AddDatabase("BankingServiceDb");
