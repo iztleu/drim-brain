@@ -24,13 +24,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlockchainService", "Blockc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationService", "NotificationService", "{5E3B2D35-E490-4E93-A013-15573B9EE203}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockchainService.Maintenance", "BlockchainService\BlockchainService.Maintenance\BlockchainService.Maintenance.csproj", "{7705D781-9CFE-4459-A3C5-4FAC749CC9FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockchainService.Setup", "BlockchainService\BlockchainService.Setup\BlockchainService.Setup.csproj", "{7705D781-9CFE-4459-A3C5-4FAC749CC9FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B662646E-355D-458C-921B-4FE7B9418078}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Database", "Common\Common.Database\Common.Database.csproj", "{39EAA739-5A29-4594-B4FB-92C888481A28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Kafka", "Common\Common.Kafka\Common.Kafka.csproj", "{7A40EEF3-1D98-463A-93F5-EFBAF418A097}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingService.Api", "BankingService\BankingService.Api\BankingService.Api.csproj", "{722B9153-564D-4B59-B591-E8C15FABC9DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{7A40EEF3-1D98-463A-93F5-EFBAF418A097}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A40EEF3-1D98-463A-93F5-EFBAF418A097}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A40EEF3-1D98-463A-93F5-EFBAF418A097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{722B9153-564D-4B59-B591-E8C15FABC9DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{722B9153-564D-4B59-B591-E8C15FABC9DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{722B9153-564D-4B59-B591-E8C15FABC9DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{722B9153-564D-4B59-B591-E8C15FABC9DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{90534115-4395-4C20-8D32-6CDDE28A9B65} = {6634CF42-6A87-4142-9216-714D3B83D515}
@@ -90,5 +96,6 @@ Global
 		{7705D781-9CFE-4459-A3C5-4FAC749CC9FA} = {CF080042-3A2C-466C-817F-ABA5394B2124}
 		{39EAA739-5A29-4594-B4FB-92C888481A28} = {B662646E-355D-458C-921B-4FE7B9418078}
 		{7A40EEF3-1D98-463A-93F5-EFBAF418A097} = {B662646E-355D-458C-921B-4FE7B9418078}
+		{722B9153-564D-4B59-B591-E8C15FABC9DC} = {31E5A35E-5EE8-4547-ACED-9A4CB4F0E7EC}
 	EndGlobalSection
 EndGlobal

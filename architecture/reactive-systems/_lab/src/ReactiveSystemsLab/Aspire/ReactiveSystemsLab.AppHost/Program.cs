@@ -7,7 +7,7 @@ var rabbitMq = builder.AddRabbitMQ("rabbitmq");
 var blockchainServiceDb = builder.AddPostgres("blockchain-service-db")
     .AddDatabase("BlockchainServiceDb");
 
-var blockchainServiceMaintenance = builder.AddProject<Projects.BlockchainService_Maintenance>("blockchain-service-maintenance")
+var blockchainServiceSetup = builder.AddProject<Projects.BlockchainService_Setup>("blockchain-service-setup")
     .WithReference(blockchainServiceDb)
     .WithReplicas(1);
 

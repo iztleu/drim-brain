@@ -19,7 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\ApiGateway\ApiGateway\ApiGateway.csproj" />
       <ProjectReference Include="..\..\BankingService\BankingService\BankingService.csproj" />
-      <ProjectReference Include="..\..\BlockchainService\BlockchainService.Maintenance\BlockchainService.Maintenance.csproj" />
+      <ProjectReference Include="..\..\BlockchainService\BlockchainService.Setup\BlockchainService.Setup.csproj" />
       <ProjectReference Include="..\..\BlockchainService\BlockchainService\BlockchainService.csproj" />
       <ProjectReference Include="..\..\NotificationService\NotificationService\NotificationService.csproj" />
     </ItemGroup>

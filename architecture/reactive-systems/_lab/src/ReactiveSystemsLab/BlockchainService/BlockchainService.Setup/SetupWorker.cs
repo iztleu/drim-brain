@@ -4,9 +4,9 @@ using Common.Database;
 using Confluent.Kafka;
 using Confluent.Kafka.Admin;
 
-namespace BlockchainService.Maintenance;
+namespace BlockchainService.Setup;
 
-public class Worker(
+public class SetupWorker(
     IServiceProvider _serviceProvider,
     IHostApplicationLifetime _hostApplicationLifetime)
     : BackgroundService
@@ -26,6 +26,8 @@ public class Worker(
     private async Task MigrateDatabase(CancellationToken stoppingToken)
     {
         using var activity = ActivitySource.StartActivity(ActivityKind.Client);
+
+
 
         await DatabaseMigrator.Migrate<BlockchainDbContext>(_serviceProvider, stoppingToken);
     }

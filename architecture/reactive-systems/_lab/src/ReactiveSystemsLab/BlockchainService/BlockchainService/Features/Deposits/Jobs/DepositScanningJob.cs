@@ -1,4 +1,5 @@
 using BlockchainService.Api;
+using BlockchainService.Api.Kafka.Events;
 using Confluent.Kafka;
 using Quartz;
 
@@ -17,15 +18,7 @@ public class DepositScanningJob(
             await _kafkaProducer.ProduceAsync("crypto-deposit-created", new Message<int, CryptoDepositCreatedEvent>
             {
                 Key = 1,
-                Value = new CryptoDepositCreatedEvent
-                {
-                    Id = 1,
-                    UserId = 1,
-                    Asset = "BTC",
-                    Amount = 0.1m,
-                    TransactionHash = "0x1234567890",
-                    CreatedAt = DateTime.UtcNow
-                },
+                Value = new CryptoDepositCreatedEvent(1, 1, "BTC", 0.1m, "0x1234567890", DateTime.UtcNow),
             }, cts.Token);
 
             _logger.LogInformation("DepositScanningJob executed");

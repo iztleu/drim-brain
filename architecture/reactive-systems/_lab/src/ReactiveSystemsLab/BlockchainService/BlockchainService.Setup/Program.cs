@@ -1,16 +1,16 @@
 using BlockchainService.Database;
-using BlockchainService.Maintenance;
+using BlockchainService.Setup;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddServiceDefaults();
 
 builder.Services.AddOpenTelemetry()
-    .WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
+    .WithTracing(tracing => tracing.AddSource(SetupWorker.ActivitySourceName));
 
 builder.AddNpgsqlDbContext<BlockchainDbContext>("BlockchainServiceDb");
 
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<SetupWorker>();
 
 var host = builder.Build();
 

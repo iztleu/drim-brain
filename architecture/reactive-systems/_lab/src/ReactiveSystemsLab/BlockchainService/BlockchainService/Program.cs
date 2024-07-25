@@ -1,4 +1,5 @@
 using BlockchainService.Api;
+using BlockchainService.Api.Kafka.Events;
 using BlockchainService.Database;
 using BlockchainService.Features.Deposits.Jobs;
 using Common.Kafka;
