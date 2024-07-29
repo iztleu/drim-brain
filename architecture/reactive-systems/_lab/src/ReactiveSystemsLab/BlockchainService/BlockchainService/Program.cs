@@ -49,7 +49,7 @@ builder.Services.AddQuartz(q =>
         .ForJob(jobKey)
         .WithIdentity("DepositScanningJobTrigger")
         .StartAt(DateTimeOffset.UtcNow.AddSeconds(10))
-        .WithCronSchedule("0/5 * * * * ?"));
+        .WithCronSchedule("0/1 * * * * ?"));
 });
 
 builder.Services.AddQuartzHostedService(q =>

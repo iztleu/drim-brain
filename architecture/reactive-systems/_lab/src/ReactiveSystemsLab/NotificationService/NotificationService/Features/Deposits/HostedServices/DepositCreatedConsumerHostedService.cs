@@ -1,6 +1,8 @@
 using System.Text;
 using System.Text.Json;
 using BankingService.Api.RabbitMQ.Events;
+using Google.Protobuf.WellKnownTypes;
+using NotificationService.Features.Notifications.Services;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -8,6 +10,7 @@ namespace NotificationService.Features.Deposits.HostedServices;
 
 public class DepositCreatedConsumerHostedService(
     IConnection _rabbitMqConnection,
+    NotificationStream _notificationStream,
     ILogger<DepositCreatedConsumerHostedService> _logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -27,6 +30,16 @@ public class DepositCreatedConsumerHostedService(
 
                     _logger.LogInformation("Consumed message with user id {UserId} and asset {Asset}",
                         depositCreatedEvent!.UserId, depositCreatedEvent.Asset);
+
+                    var notification = new NotificationDto
+                    {
+                        Id = 1,
+                        UserId = depositCreatedEvent.UserId,
+                        Text = $"Deposit of {depositCreatedEvent.Amount} {depositCreatedEvent.Asset} created.",
+                        CreatedAt = Timestamp.FromDateTime(depositCreatedEvent.CreatedAt),
+                    };
+
+                    _notificationStream.Publish(notification);
 
                     model.BasicAck(eventArgs.DeliveryTag, multiple: false);
                 };

@@ -33,7 +33,7 @@ public class CryptoDepositCreatedConsumerHostedService(
 
                 var ev = consumeResult.Message.Value;
 
-                var depositCreatedEvent = new DepositCreatedEvent(ev.UserId, ev.Asset, ev.Amount, ev.CreatedAt);
+                var depositCreatedEvent = new DepositCreatedEvent(ev.Id, ev.UserId, ev.Asset, ev.Amount, ev.CreatedAt);
                 var body = JsonSerializer.Serialize(depositCreatedEvent);
                 var bodyBytes = Encoding.UTF8.GetBytes(body);
 

@@ -10,6 +10,8 @@
     <ItemGroup>
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.1.0" />
         <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.1.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
+        <PackageReference Include="MediatR" Version="12.4.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
           <PrivateAssets>all</PrivateAssets>
@@ -21,6 +23,10 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Aspire\ReactiveSystemsLab.ServiceDefaults\ReactiveSystemsLab.ServiceDefaults.csproj" />
       <ProjectReference Include="..\..\BankingService\BankingService.Api\BankingService.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Protobuf Include="Features\Notifications\notifications.proto" GrpcServices="Server" />
     </ItemGroup>
 
 </Project>

@@ -31,6 +31,7 @@ var notificationServiceDb = builder.AddPostgres("notification-service-db")
 var notificationService = builder.AddProject<Projects.NotificationService>("notification-service")
     .WithReference(notificationServiceDb)
     .WithReference(rabbitMq)
+    .AsHttp2Service()
     .WithReplicas(1);
 
 var apiGateway = builder.AddProject<Projects.ApiGateway>("api-gateway")
