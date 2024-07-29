@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using BlockchainService.Api.Kafka;
 using BlockchainService.Database;
 using Common.Database;
 using Confluent.Kafka;
@@ -8,17 +9,18 @@ namespace BlockchainService.Setup;
 
 public class SetupWorker(
     IServiceProvider _serviceProvider,
+    IConfiguration _configuration,
     IHostApplicationLifetime _hostApplicationLifetime)
     : BackgroundService
 {
-    public const string ActivitySourceName = "blockchain-service-maintenance";
+    public const string ActivitySourceName = "blockchain-service-setup";
 
     private static readonly ActivitySource ActivitySource = new(ActivitySourceName);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await MigrateDatabase(stoppingToken);
-        //await CreateKafkaTopics(stoppingToken);
+        await CreateKafkaTopics();
 
         _hostApplicationLifetime.StopApplication();
     }
@@ -27,17 +29,14 @@ public class SetupWorker(
     {
         using var activity = ActivitySource.StartActivity(ActivityKind.Client);
 
-
-
         await DatabaseMigrator.Migrate<BlockchainDbContext>(_serviceProvider, stoppingToken);
     }
 
-    private async Task CreateKafkaTopics(CancellationToken cancellationToken)
+    private async Task CreateKafkaTopics()
     {
         using var activity = ActivitySource.StartActivity(ActivityKind.Client);
 
-        await using var scope = _serviceProvider.CreateAsyncScope();
-        var connectionString = scope.ServiceProvider.GetRequiredService<IConfiguration>().GetConnectionString("kafka");
+        var connectionString = _configuration.GetConnectionString("kafka");
 
         var adminClientConfig = new AdminClientConfig
         {
@@ -50,7 +49,7 @@ public class SetupWorker(
         {
             new()
             {
-                Name = "crypto-deposit-created",
+                Name = TopicNames.CryptoDepositCreated,
                 NumPartitions = 5,
                 ReplicationFactor = 1,
             },

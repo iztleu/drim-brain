@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlockchainService.Migrations
 {
     [DbContext(typeof(BlockchainDbContext))]
-    [Migration("20240723145635_AddQuartzTables")]
+    [Migration("20240729092809_AddQuartzTables")]
     partial class AddQuartzTables
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace BlockchainService.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

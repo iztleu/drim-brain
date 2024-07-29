@@ -17,6 +17,8 @@ public static class SubscribeForNotifications
         {
             var channelReader = _notificationStream.GetChannelReader(request.UserId);
 
+            request.UnsubscriptionToken.Register(() => _notificationStream.ReleaseChannelReader(request.UserId));
+
             return Task.FromResult(channelReader);
         }
     }

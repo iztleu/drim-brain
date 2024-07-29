@@ -8,8 +8,6 @@ public class RabbitMqSetupHostedService(
     ILogger<RabbitMqSetupHostedService> _logger)
     : BackgroundService
 {
-    private const string DepositCreatedQueue = "deposit-created";
-
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -20,8 +18,8 @@ public class RabbitMqSetupHostedService(
 
                 using var model = _connection.CreateModel();
                 model.ExchangeDeclare(ExchangeNames.BankingService, ExchangeType.Topic, durable: true, autoDelete: false);
-                model.QueueDeclare(DepositCreatedQueue, durable: true, exclusive: false, autoDelete: false);
-                model.QueueBind(DepositCreatedQueue, ExchangeNames.BankingService, RoutingKeys.DepositCreated);
+                model.QueueDeclare(RabbitMqQueueNames.DepositCreated, durable: true, exclusive: false, autoDelete: false);
+                model.QueueBind(RabbitMqQueueNames.DepositCreated, ExchangeNames.BankingService, RoutingKeys.DepositCreated);
 
                 _logger.LogInformation("RabbitMQ setup completed");
                 break;
@@ -36,4 +34,9 @@ public class RabbitMqSetupHostedService(
 
         return Task.CompletedTask;
     }
+}
+
+public static class RabbitMqQueueNames
+{
+    public const string DepositCreated = "deposit-created";
 }

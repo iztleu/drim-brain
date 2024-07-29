@@ -9,14 +9,25 @@ public static class SubscribeForNotifications
     public record Request(IServerStreamWriter<NotificationDto> ResponseStream) : IRequest<Unit>;
 
     internal class RequestHandler(
-        NotificationStream _notificationStream,
-        ILogger<RequestHandler> _logger) : IRequestHandler<Request, Unit>
+        NotificationStream _notificationStream)
+        : IRequestHandler<Request, Unit>
     {
         public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
         {
-            await foreach (var notification in _notificationStream.Subscribe().ReadAllAsync(cancellationToken))
+            var clientId = Guid.NewGuid().ToString();
+
+            var channelReader = _notificationStream.Subscribe(clientId);
+
+            try
             {
-                await request.ResponseStream.WriteAsync(notification, cancellationToken);
+                await foreach (var notification in channelReader.ReadAllAsync(cancellationToken))
+                {
+                    await request.ResponseStream.WriteAsync(notification, cancellationToken);
+                }
+            }
+            finally
+            {
+                _notificationStream.Unsubscribe(clientId);
             }
 
             return Unit.Value;

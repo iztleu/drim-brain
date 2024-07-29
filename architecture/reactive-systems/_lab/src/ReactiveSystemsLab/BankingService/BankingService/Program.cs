@@ -6,6 +6,13 @@ using Common.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsDevelopment())
+{
+    // We have to wait for the database migration to execute. This is a temporary solution since .NET Aspire
+    // does not support service restarts or startup dependencies yet
+    await Task.Delay(5_000);
+}
+
 builder.AddServiceDefaults();
 
 builder.AddNpgsqlDbContext<BankingDbContext>("BankingServiceDb");

@@ -11,7 +11,14 @@ builder.AddServiceDefaults();
 
 builder.AddNpgsqlDbContext<NotificationDbContext>("NotificationServiceDb");
 
-builder.AddRabbitMQClient("rabbitmq");
+builder.AddRabbitMQClient("rabbitmq",
+    settings =>
+    {
+    },
+    factory =>
+    {
+        factory.DispatchConsumersAsync = true;
+    });
 
 builder.Services.AddMediatR(cfg => cfg
     .RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
