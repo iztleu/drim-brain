@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BankingService.Migrations
 {
     [DbContext(typeof(BankingDbContext))]
-    [Migration("20240729092345_AddDeposit")]
+    [Migration("20240729124444_AddDeposit")]
     partial class AddDeposit
     {
         /// <inheritdoc />
@@ -43,8 +43,9 @@ namespace BankingService.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("SourceId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("SourceId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

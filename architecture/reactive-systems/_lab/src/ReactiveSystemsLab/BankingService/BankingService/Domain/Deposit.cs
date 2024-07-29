@@ -4,7 +4,7 @@ public class Deposit
 {
     public long Id { get; set; }
 
-    public required long SourceId { get; init; }
+    public required string SourceId { get; init; }
 
     public required int UserId { get; init; }
 

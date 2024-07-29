@@ -1,7 +1,7 @@
 namespace BlockchainService.Api.Kafka.Events;
 
 public record CryptoDepositCreatedEvent(
-    long Id,
+    string Id,
     int UserId,
     string Asset,
     decimal Amount,
