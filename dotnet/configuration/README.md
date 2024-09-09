@@ -19,6 +19,7 @@
       * [`IOptionsSnapshot<TOptions>`](#ioptionssnapshottoptions)
       * [`IOptionsMonitor<TOptions>`](#ioptionsmonitortoptions)
       * [`IOptionsFactory<TOptions>`](#ioptionsfactorytoptions)
+    * [Named Options](#named-options)
   * [Links](#links)
 
 # .NET Configuration and Options Pattern
@@ -36,7 +37,7 @@ The .NET Options Pattern is a recommended approach for handling configuration in
 The .NET Options pattern allows configuring settings from various sources, ensuring flexibility and adaptability to different environments. Below are the primary sources:
 
 ![source_of_options_hierarchy](_images/source_of_options_hierarchy.png)
-Numbers and arrows points order for applying. Later sources overwrite earlier sources.
+Numbers and arrows point to the default order for applying. Later sources overwrite earlier sources. Order possible to be changed.
 
 ### Default Options
 
@@ -54,7 +55,7 @@ public class UserServiceOptions
 
 ### JSON Files
 
-Configurations are often stored in JSON files, such as `appsettings.json`, where you can define your options in a hierarchical structure.
+Configurations are often stored in JSON files, such as `appsettings.json`, where you can define your options in a hierarchical structure. `Env` for `appsettings.{Env}.json` taking from environment variable `ASPNETCORE_ENVIRONMENT`.
 
 ```json
 {
@@ -71,8 +72,6 @@ Configurations are often stored in JSON files, such as `appsettings.json`, where
 
 For sensitive information like API keys or connection strings during development, you can use the .NET User Secrets. This keeps sensitive data out of your source control while still integrating it into the options.
 
-__Example:__
-
 ```bash
 dotnet user-secrets set "Services:UserService:Url" "https://secure.api.user-service.com"
 dotnet user-secrets set "Services:UserService:Timeout" "00:01:00"
@@ -80,11 +79,11 @@ dotnet user-secrets set "Services:UserService:Timeout" "00:01:00"
 
 ### Environment Variables
 
-Environment variables allow you to override configuration values without modifying code or configuration files. These are especially useful in cloud environments or for different deployment environments.
+Environment variables allow you to override configuration values without modifying code or configuration files. These are especially useful in cloud environments or for different deployment environments. `__` is used as the delimiter here for config sections.
 
 ```bash
-export Services__UserService__Url=https://env-specific.url
-export Services__UserService__Timeout=00:02:00
+SET Services__UserService__Url=https://env-specific.url
+SET Services__UserService__Timeout=00:02:00
 ```
 
 ### Command-Line Arguments
@@ -196,6 +195,10 @@ public class UserServiceClient
 
 * Is registered as a __Singleton__ and can be injected into any service lifetime.
 * It creates a new options instance for every `Create` method call. So, are possible _performance concerns_
+
+### Named Options
+
+//TODO Add description for named options
 
 ## Links
 
