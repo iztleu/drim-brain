@@ -4,3 +4,11 @@ GET {{WebApi_HostAddress}}/products/
 Accept: application/json
 
 ###
+
+POST {{WebApi_HostAddress}}/cart/
+Content-Type: application/json
+
+{
+    "productId": "1d4axbnc80101b8",
+    "quantity": 2
+}

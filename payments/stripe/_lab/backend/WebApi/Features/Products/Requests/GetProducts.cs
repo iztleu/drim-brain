@@ -23,8 +23,8 @@ public static class GetProducts
                 ISender sender,
                 CancellationToken cancellationToken) =>
             {
-                var page = await sender.Send(new Request(), cancellationToken);
-                return TypedResults.Ok(page);
+                var products = await sender.Send(new Request(), cancellationToken);
+                return TypedResults.Ok(products);
             });
         }
     }

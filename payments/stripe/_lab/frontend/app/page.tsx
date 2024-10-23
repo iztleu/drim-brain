@@ -1,7 +1,11 @@
+import Link from "next/link";
+import { Container, NavLink, Title } from "@mantine/core";
+
 export default function Home() {
   return (
-    <div>
-      <h1>Stripe Lab</h1>
-    </div>
+    <Container>
+      <Title my="xl">StripeLab</Title>
+      <NavLink href="/products" label="Products"></NavLink>
+    </Container>
   );
 }

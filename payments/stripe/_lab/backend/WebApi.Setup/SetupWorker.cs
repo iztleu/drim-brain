@@ -101,9 +101,21 @@ public class SetupWorker : BackgroundService
         await strategy.ExecuteAsync(async () =>
         {
             await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+            await SeedUsers(dbContext, idFactory, cancellationToken);
             await SeedProducts(dbContext, idFactory, cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         });
+    }
+
+    private static async Task SeedUsers(AppDbContext dbContext, IdFactory idFactory, CancellationToken cancellationToken)
+    {
+        var user = new User
+        {
+            Id = User.CurrentUserId,
+        };
+
+        dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private static async Task SeedProducts(AppDbContext dbContext, IdFactory idFactory, CancellationToken cancellationToken)
