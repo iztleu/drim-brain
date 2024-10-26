@@ -12,3 +12,23 @@ Content-Type: application/json
     "productId": "1d4axbnc80101b8",
     "quantity": 2
 }
+
+###
+
+GET {{WebApi_HostAddress}}/cart/
+Accept: application/json
+
+###
+
+POST {{WebApi_HostAddress}}/orders/
+Content-Type: application/json
+
+{
+    "cartItemIds": ["12m1rwss84101d8", "11gfgwhs8410160"]
+}
+
+
+###
+
+GET {{WebApi_HostAddress}}/orders/
+Accept: application/json

@@ -97,6 +97,7 @@ public static class AddItemToCart
             return new CartItemModel(
                 IdEncoding.Encode(cartItem.Id),
                 request.ProductId,
+                product.Name,
                 product.Price,
                 cartItem.Quantity);
         }

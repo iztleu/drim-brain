@@ -1,3 +1,3 @@
 namespace WebApi.Features.Carts.Models;
 
-public record CartItemModel(string Id, string ProductId, decimal Price, int Quantity);
+public record CartItemModel(string Id, string ProductId, string ProductName, decimal Price, int Quantity);

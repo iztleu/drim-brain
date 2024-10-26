@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useState, useEffect} from 'react';
-import { Card, Text, Title, Grid, Container } from '@mantine/core';
+import { Card, Text, Title, Grid, Container, Button } from '@mantine/core';
 
 interface Product {
     id: string;
@@ -24,18 +24,32 @@ export default function() {
         }
         fetchProducts()
     }, []);
+
+    const addToCart = async (productId: string) => {
+        let res = await fetch(`${API_URL}/cart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({productId, quantity: 1})
+        })
+        let data = await res.json()
+        console.log(data)
+    }
     
     return (
         <Container>
           <Title my="xl">Products</Title>
           <Grid gutter="xl">
             {products.map((product) => (
-            <Grid.Col span={12}>
+            <Grid.Col span={6}>
               <Card key={product.id} shadow="xs" padding="xl" radius="lg">
                 <Title order={3}>{product.name}</Title>
                 <Text>{product.description}</Text>
                 <Text>${product.price}</Text>
                 <Text>Stock: {product.stockQuantity}</Text>
+                <p/>
+                <Button variant='light' size="compact-md" onClick={() => addToCart(product.id)}>Add to Cart</Button>
               </Card>
             </Grid.Col>
             ))}
