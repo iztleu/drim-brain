@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "NotificationService";
+
+package notifications;
+
+service Notifications {
+    rpc SubscribeForNotifications(SubscribeForNotificationsRequest) returns (stream NotificationDto);
+}
+
+message SubscribeForNotificationsRequest {
+}
+
+message NotificationDto {
+    int64 id = 1;
+    int32 user_id = 2;
+    string text = 3;
+    google.protobuf.Timestamp created_at = 4;
+}

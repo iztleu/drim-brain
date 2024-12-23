@@ -1,0 +1,6 @@
+﻿<Solution>
+  <Project Path="AppHost\AppHost.csproj" Type="Classic C#" />
+  <Project Path="ServiceDefaults\ServiceDefaults.csproj" Type="Classic C#" />
+  <Project Path="WebApi.Setup\WebApi.Setup.csproj" Type="Classic C#" />
+  <Project Path="WebApi\WebApi.csproj" Type="Classic C#" />
+</Solution>
